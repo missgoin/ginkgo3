@@ -5,7 +5,7 @@ ZIPNAME="SUPER.KERNEL-GINKGO-$(TZ=Asia/Jakarta date +"%Y%m%d-%H%M").zip"
 TC_DIR="$PWD/tc/r487747"
 GCC_64_DIR="$PWD/tc/aarch64-linux-android-4.9"
 GCC_32_DIR="$PWD/tc/arm-linux-androideabi-4.9"
-#AK3_DIR="$PWD/AnyKernel3"
+AK3_DIR="$PWD/AnyKernel3"
 DEFCONFIG="ginkgo-perf_defconfig"
 
 # Select LTO variant ( Full LTO by default )
@@ -95,14 +95,14 @@ make -j$(nproc --all) O=out ARCH=arm64 \
 if [ -f "out/arch/arm64/boot/Image.gz-dtb" ] && [ -f "out/arch/arm64/boot/dtbo.img" ]; then
    echo -e "\nKernel compiled succesfully! Zipping up...\n"
    
-   git clone --depth=1 https://github.com/missgoin/AnyKernel3.git
+   #git clone --depth=1 https://github.com/missgoin/AnyKernel3.git
 
-   cp $IMAGE AnyKernel3
-   cp $DTBO AnyKernel3
+   cp $IMAGE $AK3_DIR
+   cp $DTBO $AK3_DIR
    #find $DTB -name "*.dtb" -exec cat {} + > AnyKernel3/dtb
 	
    # Zipping and Push Kernel
-   cd AnyKernel3 || exit 1
+   cd $AK3_DIR || exit 1
    zip -r9 ${ZIPNAME} *
    MD5CHECK=$(md5sum "$ZIPNAME" | cut -d' ' -f1)
    echo "Zip: $ZIPNAME"
